@@ -1,2 +1,2 @@
-LMS-java-implementation
+LMS java implementation
 =======================
