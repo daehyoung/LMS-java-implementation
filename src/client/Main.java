@@ -14,6 +14,7 @@ import network.Response;
 import network.ServerInterface;
 import network.Request;
 
+
 @SuppressWarnings("unused")
 public class Main {
 	private static ServerInterface serverInterface = ServerInterface.getInstance();
@@ -39,11 +40,11 @@ public class Main {
 		
 		//===========================================
 		// uncomment this Block comment to test server connection
-		/*
-		 
+		
+		
 		//If you want to search for user with id 1123
 		User userX = new User();
-		userX.setUserID(1123);
+		userX.setUserID(100000004);
 		
 		// Asking UserManager control to give you user object with data retrieved from server database
 		User user = new UserManager().getUser(userX);
@@ -55,7 +56,7 @@ public class Main {
 		System.out.println("User type: " + user.getUserType());
 		System.out.println("Phone: " + user.getPhoneNumber());
 		
-		*/
+		
 		//================================================
 
 

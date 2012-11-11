@@ -26,7 +26,7 @@ public class UserManager {
      */
 	public User getUser(User user) throws SQLException {
 			// Building sql statement, which will be sent to server
-	        String sql = "SELECT * FROM library_db.user WHERE user_id = "+user.getUserID();
+	        String sql = "SELECT * FROM librisDB.user WHERE user_id = "+user.getUserID();
 	        
 	        // Constracting some empty objects
 			User result = new User();

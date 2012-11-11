@@ -227,7 +227,7 @@ public class Server {
 				case Request.LOGOUT:
 					
 					Response response = new Response();
-					response.setMessage(username + " you disconnected with a LOGOUT message.");
+					response.setMessage("You disconnected with a LOGOUT message.");
 					writeMsg(response);
 					display(username + " disconnected with a LOGOUT message.");
 					keepGoing = false;

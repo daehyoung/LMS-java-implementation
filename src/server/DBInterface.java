@@ -23,7 +23,7 @@ public enum DBInterface {
 	private static Connection connect = null;
 	private static String mysql_username = "root";
 	private static String mysql_password = "243816";
-	private static String server_ip = "locahost";
+	private static String server_ip = "localhost";
 	
 	/**
 	 *It will connect to database and get resultset
@@ -33,7 +33,7 @@ public enum DBInterface {
 	public CachedRowSet getRecord(String sql) throws Exception {
 		
 		Class.forName("com.mysql.jdbc.Driver");
-		connect = DriverManager.getConnection("jdbc:mysql://"+ server_ip +"/library_db?user="+ mysql_username +"&password="+ mysql_password);
+		connect = DriverManager.getConnection("jdbc:mysql://"+ server_ip +"/librisDB?user="+ mysql_username +"&password="+ mysql_password);
 		
 		try {
 
