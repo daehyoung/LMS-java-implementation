@@ -1,0 +1,9 @@
+*/logs/log-*.php
+*/logs/!index.html
+*/cache/*
+*/cache/!index.html
+*.log
+*.project
+*.DS_Store
+www/uploads/*
+.project
