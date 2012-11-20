@@ -1,4 +1,4 @@
-package server.database;
+package server.databaseinterface;
 
 /**
  * DBInterface.java 
@@ -9,6 +9,7 @@ package server.database;
  * @author Sardor Isakov
  * @version 2.0
  */
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +24,7 @@ public enum DBInterface {
 	
 	private static Connection connect = null;
 	private static String mysqlUsername = "root";
-	private static String mysqlPassword = "243816";
+	private static String mysqlPassword = "root";
 	private static String serverIp = "localhost";
 	
 	/**
@@ -37,7 +38,6 @@ public enum DBInterface {
 		connect = DriverManager.getConnection("jdbc:mysql://" + serverIp + "/librisDB?user=" + mysqlUsername + "&password=" + mysqlPassword);
 		
 		try {
-
 			PreparedStatement prest = connect.prepareStatement(sql);
 			prest.setMaxRows(10);
 			ResultSet resultSet = prest.executeQuery();
@@ -47,13 +47,40 @@ public enum DBInterface {
 	        resultSet.close();
 	        prest.close();
 	        connect.close();
+	        
 	        return cachedRowSet;
-		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
 
+	public void updateRecord(String sql) {
+		
+	}
+
+	public int[] insertRecord(String sql) throws Exception {
+		Class.forName("com.mysql.jdbc.Driver");
+		connect = DriverManager.getConnection("jdbc:mysql://" + serverIp + "/librisDB?user=" + mysqlUsername + "&password=" + mysqlPassword);
+		connect.setAutoCommit(false);
+		
+		java.sql.Statement stmt;
+		try {
+			stmt = connect.createStatement();
+			
+			stmt.addBatch(sql);
+			int result[] = stmt.executeBatch();
+			
+			connect.commit();
+			connect.close();
+			stmt.close();
+			
+			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
 //END

@@ -1,4 +1,6 @@
 package client.serverinterface;
+import javax.sql.rowset.CachedRowSet;
+
 /**
  * ServerInterface application - file ServerInterface.java 
  * 
@@ -20,8 +22,7 @@ public class ServerInterface {
 
 	public RequestPacket send(RequestPacket request) {
 		client.sendMessage(request);
-		RequestPacket response = client.getInputStream();
-		return response;
+		return client.getInputStream();
 	}
 	
 	public boolean openConnection(String server,int port) {		
@@ -34,11 +35,11 @@ public class ServerInterface {
 			return false;
 		return true;
 	}
-	public RequestPacket connect2(String server,int port, String username, String password) {
-		client = new NetworkConnection(server, port, username, password);
-		if(!client.start()) 
-			return client.getInputStream();
-		return client.getInputStream();
+
+	public void closeConnection() {		
+		RequestPacket request = new RequestPacket();
+		request.setType(LOGOUT);
+		client.sendMessage(request);
 	}
 	
 	public int getType() {
@@ -69,5 +70,11 @@ public class ServerInterface {
 	}
 	private Object readResolve() {
 		return INSTANCE;
+	}
+
+	public CachedRowSet request(RequestPacket request) {
+		client.sendMessage(request);
+		request = send(request);
+		return request.getRowSet();
 	}
 }

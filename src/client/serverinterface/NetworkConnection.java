@@ -22,20 +22,8 @@ public class NetworkConnection {
 	private Socket socket;
 	
 	// the server, the port and the username
-	@SuppressWarnings("unused")
 	private String server, username, password;
 	private int port;
-	
-	//private Main mn;
-	
-	/** Constructor
-	 * 
-	 * @param server ip address
-	 * @param port port number
-	 */
-	protected NetworkConnection(String server, int port) {
-		this(server, port,"Guest","guestPwd");
-	}
 	
 	/** Constructor
 	 * 
@@ -75,8 +63,8 @@ public class NetworkConnection {
 		}
 
 		RequestPacket request = new RequestPacket();
-		//request.setUsername(username);
-		//request.setPassword(password);
+		request.setUsername(username);
+		request.setPassword(password);
 		sendMessage(request);
 
 		return true;

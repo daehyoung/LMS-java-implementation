@@ -15,7 +15,7 @@ import javax.sql.rowset.CachedRowSet;
 public class RequestPacket implements Serializable {
 	protected static final long serialVersionUID = 200L;
 
-	public static final int REQUEST_SQL = 0, REQUEST_LOGIN = 3, REQUEST_LOGOUT = 4;
+	public static final int REQUEST_SQL = 0, REQUEST_LOGIN = 1, REQUEST_LOGOUT = 2;
 	public static final int SELECT = 0, UPDATE = 1, DROP = 2, INSERT = 3, TEST = 99;
 	private int Code;
 	private int type;
@@ -24,6 +24,8 @@ public class RequestPacket implements Serializable {
 	private String message;
 	private String username;
 	private String password;
+	private int[] insertResult;
+	
 	
 	//Getter and setter
 	public String getMsg() {
@@ -80,6 +82,14 @@ public class RequestPacket implements Serializable {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public int[] getInsertResult() {
+		return insertResult;
+	}
+
+	public void setInsertResult(int[] is) {
+		this.insertResult = is;
 	}
 	
 

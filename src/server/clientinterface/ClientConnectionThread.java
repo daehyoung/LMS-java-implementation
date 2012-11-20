@@ -1,4 +1,4 @@
-package server;
+package server.clientinterface;
 /**
  * Client Thread side application - file ClientConnectionThread.java 
  * 
@@ -11,20 +11,25 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Date;
 
+import server.control.datamanagement.RequestManager;
+//import server.databaseinterface.DBInterface;
+
 import communication.*;
 /** Representation for Client Thread
  */
-class ClientConnectionThread {
+class ClientConnectionThread  extends Thread {
 	private static int uniqueId; 	// a unique ID for each connection
 	Socket socket;					// the socket where to listen/talk
 	ObjectInputStream sInput;
 	ObjectOutputStream sOutput;
 	int threadID;							// thread's unique id (easier for deconnection)
 
-	String userID;
+	int userID;
 	String userType;
+	boolean userAuthenticated = false;
 
 	RequestPacket request;
+	RequestManager requestManager;
 	String cm2;
 	String date;
 	
@@ -45,9 +50,6 @@ class ClientConnectionThread {
 			sInput  = new ObjectInputStream(socket.getInputStream());
 			
 		    request = (RequestPacket) sInput.readObject();
-			//display("Username: " + request.getUsername() + "	Password: " +  request.getPassword());
-			//username = request.getUsername();
-			
 		}
 		catch (IOException e) {
 			//display("Exception creating new Input/output Streams: " + e);
@@ -58,14 +60,17 @@ class ClientConnectionThread {
 		catch (ClassNotFoundException e) {
 		}
         date = new Date().toString() + "\n";
+        
+        
 	}
 	
 	/**
 	 * This will run forever
 	 */
-	protected void run() {
+	public void run() {
 		// to loop until LOGOUT
 		boolean keepGoing = true;
+		requestManager = new RequestManager();
 		while(keepGoing) {
 			try {
 
@@ -79,39 +84,27 @@ class ClientConnectionThread {
 				break;
 			}
 			
-			
 			switch(request.getType()) {
-			case RequestPacket.REQUEST_SQL:
-				try {
-					request = new RequestManager().getReponse(request);
-				
-					//sOutput.writeObject(response);
+				case RequestPacket.REQUEST_SQL:
+					try {
+						request = requestManager.processRequest(request);
+						writeMsg(request);
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+					} break;
+				case RequestPacket.REQUEST_LOGOUT:
+					
+					//writeMsg(response);
+					System.out.println(userType + " disconnected with a LOGOUT message.");
+					keepGoing = false;
+					break;
+				case RequestPacket.REQUEST_LOGIN:
+					request = requestManager.processRequest(request);
+					userType = request.getUsername();
 					writeMsg(request);
-				}
-				catch (NumberFormatException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				
-				break;
-			case RequestPacket.REQUEST_LOGOUT:
-				
-				//Response response = new Response();
-				//response.setMessage("You disconnected with a LOGOUT message.");
-				//writeMsg(response);
-				//display(username + " disconnected with a LOGOUT message.");
-				keepGoing = false;
-				break;
-			/*case Request.LOGIN:
-				//writeMsg("List of the users connected at " + sdf.format(new Date()) + "\n");
-				// scan al the users connected
-				for(int i = 0; i < al.size(); ++i) {
-					ServerThread ct = al.get(i);
-					//writeMsg((i+1) + ") " + ct.username + " since " + ct.date);
-				}
-				break;*/
+					break;
 			}
 		}
 		// remove myself from the arrayList containing the list of the

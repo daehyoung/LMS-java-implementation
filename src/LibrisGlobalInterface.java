@@ -1,4 +1,4 @@
-package communication;
+
 
 /**
  * This interface contains global constants and must be implemented by all applicable classes

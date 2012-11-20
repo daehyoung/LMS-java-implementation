@@ -8,13 +8,14 @@ import java.util.ArrayList;
  * @version 0
  *
  */
-public class User{
+public abstract class User{
 	
 	String firstName;
 	String lastName;
 	int userID;
 	String password;
 	String emailAddress;
+	String userType;
 	ArrayList<Integer> reserves; //It wouldn't work with the int type
 	ArrayList<Integer> loans;
 	boolean enabled;
@@ -107,7 +108,7 @@ public class User{
 	 * @param The new password
 	 */
 	public void setPassword(String newPassword){
-		lastName = newPassword;
+		password = newPassword;
 	}
 
 	/**
@@ -187,5 +188,13 @@ public class User{
 	 */
 	void setEnabled(boolean newEnabled){
 		enabled = newEnabled;
+	}
+	
+	public String getUserType(){
+		return userType;
+	}
+
+	public void setUserType(String userType){
+		this.userType = userType;
 	}
 }

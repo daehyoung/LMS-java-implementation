@@ -1,4 +1,4 @@
-package server.gui;
+package server.userinterface;
 
 public class ServerGUI {
 

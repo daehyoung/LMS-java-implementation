@@ -1,4 +1,4 @@
-package server;
+package server.clientinterface;
 /**
  * Server side application - file Server.java 
  * 
@@ -16,7 +16,8 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import server.gui.ServerGUI;
+
+import server.userinterface.ServerGUI;
 /** Representation for server object
  */
 public class Server {
@@ -33,7 +34,11 @@ public class Server {
 	 * @param	port	specifying port number
 	 */
 	public Server(int port) {
-		this(port, null);
+		this.port = port;
+		// to display hh:mm:ss
+		sdf = new SimpleDateFormat("HH:mm:ss");
+		//ArrayList for the Client list
+		al = new ArrayList<ClientConnectionThread>();
 	}
 	
 	/** Constructor
@@ -73,7 +78,7 @@ public class Server {
 					break;
 				ClientConnectionThread t = new ClientConnectionThread(socket);  // make a thread of it
 				al.add(t);									// save it in the ArrayList
-				//t.start();
+				t.start();
 			}
 			
 			try {
