@@ -7,3 +7,5 @@
 *.DS_Store
 www/uploads/*
 .project
+
+src/client/control/data/.DS_Store
