@@ -14,7 +14,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import server.dbinterface.DBInterface;
+import server.dbinterface.DBInterfaceXX;
 import com.sun.rowset.CachedRowSetImpl;
 
 /**
@@ -27,7 +27,7 @@ import com.sun.rowset.CachedRowSetImpl;
  */
 public class EmailManager extends ScheduledTask {
 	
-	private DBInterface dbInterface;	//interface to the database
+	private DBInterfaceXX dbInterface;	//interface to the database
 
 
 	private final static long RUN_EMAILMGR_10MIN = 10*60*1000;	//Run the email manager once every 10 minutes. Short time to accommodate sending emails to ready reserves in a timely matter
@@ -80,7 +80,7 @@ public class EmailManager extends ScheduledTask {
 		
 		
 		try {
-			this.dbInterface = DBInterface.getReference();
+			this.dbInterface = DBInterfaceXX.getReference();
 			if(dbInterface == null)	//if the dbInterface is null, the database hasn't been initialized
 				throw new SQLException("Database hasn't been initialized");
 			

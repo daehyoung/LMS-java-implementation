@@ -7,7 +7,7 @@ import client.control.data.entity.Entity;
  * Represents a reserve on a Resource
  * 
  * @author Jeremy Lerner
- * @version 3
+ * @version 4
  *
  */
 public class Reserve extends Entity{
@@ -24,6 +24,31 @@ public class Reserve extends Entity{
 		reservationDate = null;
 		availableDate = null;
 	}
+	/**
+	 * Copy constructor
+	 * 
+	 * @param Reserve object to copy
+	 */
+	public Reserve(Reserve original){
+		super(original);
+		resource = original.getResource();
+		reservationDate = original.getReservationDate();
+		availableDate = original.getAvailableDate();
+	}
+	/**
+	 * Constructs a new Reserve with specified fields
+	 * 
+	 * @param value for ID
+	 * @param value for Resource
+	 * @param value for Reservation Date
+	 * @param value for Available Date
+	 */
+	public Reserve(int newID, int newResource, Date newReservationDate, Date newAvailableDate){
+		super(newID);
+		resource = newResource;
+		reservationDate = newReservationDate;
+		availableDate = newAvailableDate;
+	}
 	
 	/**
 	 * Returns the ID number of the resource held on Reserve
@@ -33,16 +58,6 @@ public class Reserve extends Entity{
 	public int getResource(){
 		return resource;
 	}
-	
-	/**
-	 * Sets the Reserve's Resource
-	 * 
-	 * @param The new Resource's ID number
-	 */
-	public void setResource(int newResource){
-		resource = newResource;
-	}
-	
 	/**
 	 * Returns the Reserve's reservation date
 	 * 
@@ -51,16 +66,6 @@ public class Reserve extends Entity{
 	public Date getReservationDate(){
 		return reservationDate;
 	}
-	
-	/**
-	 * Sets the Reserve's reservation date
-	 * 
-	 * @param The new reservation date
-	 */
-	public void setReservationDate(Date newReservationDate){
-		reservationDate = newReservationDate;
-	}
-
 	/**
 	 * Returns the Reserve's available date
 	 * 
@@ -70,12 +75,7 @@ public class Reserve extends Entity{
 		return availableDate;
 	}
 	
-	/**
-	 * Sets the Reserve's available date
-	 * 
-	 * @param The new available date
-	 */
-	public void setAvailableDate(Date newAvailableDate){
-		reservationDate = newAvailableDate;
+	public boolean checkValid(){
+		return (availableDate.after(reservationDate));
 	}
 }

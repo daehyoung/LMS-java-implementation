@@ -15,19 +15,25 @@ public class RequestManager {
 		switch(request.getCode()) {
 			case RequestPacket.SELECT:
 				try {
-					request.setRowSet(DBInterface.INSTANCE.getRecord(sql));
+					request.setRowSet(DBInterface.getInstance().executeQuery(sql));
 				} catch (Exception e) {
 					e.printStackTrace();
 				} break;
 			case RequestPacket.INSERT:
 				try {
-					request.setInsertResult(DBInterface.INSTANCE.insertRecord(sql));
+					request.setInsertResult(DBInterface.getInstance().executeInsert(sql));
+				} catch (Exception e) {
+					e.printStackTrace();
+				} break;
+			case RequestPacket.UPDATE:
+				try {
+					request.setUpdated(DBInterface.getInstance().executeUpdate(sql));
 				} catch (Exception e) {
 					e.printStackTrace();
 				} break;
 			case RequestPacket.TEST:
 				try {
-					request.setMsg("Hello form RequestManager");
+					request.setTest("Hello form RequestManager");
 				} catch (Exception e) {
 					e.printStackTrace();
 				} break;
@@ -37,3 +43,4 @@ public class RequestManager {
 	}
 }
 //END
+

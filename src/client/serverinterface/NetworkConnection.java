@@ -1,76 +1,70 @@
 package client.serverinterface;
-/**
- * Client.java
- * 
- * Client object will handle connection to server
- * methods are protected and can be accessed by ServerInterface.java
- *
- * @author Sardor Isakov
- * @version 2
- */
-
 
 import java.io.*;
 import java.net.Socket;
 import communication.RequestPacket;
 
-/** Representation of connection between server and client
+/**
+ * This is the Network Connection manager, which represents connection between client and server
+ * This is protected class and can only be accessed by Server Interface class
+ * It will connect to server, and create Input and Output streams for messaging 
+ * 
+ * @author Sardor Isakov
+ * @version 2
  */
-public class NetworkConnection {
+class NetworkConnection {
 	private ObjectInputStream sInput;		// to read from the socket
 	private ObjectOutputStream sOutput;		// to write on the socket
 	private Socket socket;
 	
 	// the server, the port and the username
-	private String server, username, password;
+	private String serverIP;
 	private int port;
 	
-	/** Constructor
-	 * 
-	 * @param server
-	 * @param port
-	 * @param username
-	 * @param password
+	/** 
+	 * Constructor of the Network Connection manager class
+	 * @param	serverIP	Server's ip address
+	 * @param	port		Server's port number
 	 */
-	protected NetworkConnection(String server, int port, String username, String password) {
-		this.server = server;
+	protected NetworkConnection(String serverIP, int port) {
+		this.serverIP = serverIP;
 		this.port = port;
-		this.username = username;
-		this.password = password;
 	}
-	
+	/**
+	 * This method implements client socket. It creates a stream socket 
+	 * and connects it to the specified port number at the specified IP address.
+	 * @return	boolean		Returns true if connected to server
+	 */
 	protected boolean start() {
 		// try to connect to the server
 		try {
-				socket = new Socket(server, port);
+				socket = new Socket(serverIP, port);
 		} 
 		// if it failed not much I can so
 		catch(Exception ec) {
-			display("Error connecting to server:" + ec);
+			log("Error connecting to server:" + ec);
 			return false;
 		}
 				
 		String msg = "Connection accepted " + socket.getInetAddress() + ":" + socket.getPort();
 		
-		display(msg);
+		log(msg);
 		try {
 			sInput  = new ObjectInputStream(socket.getInputStream());
 			sOutput = new ObjectOutputStream(socket.getOutputStream());
 		}
 		catch (IOException eIO) {
-			display("Exception creating new Input/output Streams: " + eIO);
+			log("Exception creating new Input/output Streams: " + eIO);
 			return false;
 		}
 
 		RequestPacket request = new RequestPacket();
-		request.setUsername(username);
-		request.setPassword(password);
 		sendMessage(request);
 
 		return true;
 	}
 	
-	private void display(String msg) {
+	private void log(String msg) {
 		//if(mn == null)
 			//System.out.println(msg);      // println in console mode
 		//else
@@ -86,7 +80,7 @@ public class NetworkConnection {
 				sOutput.writeObject(request);
 			}
 			catch(IOException e) {
-				display("Exception writing to server: " + e);
+				log("Exception writing to server: " + e);
 			}
 		}
 	
@@ -97,7 +91,7 @@ public class NetworkConnection {
 			return inputStream;		
 		}
 		catch(IOException e) {
-			display("Server has close the connection: " + e);
+			log("Server has close the connection: " + e);
 		}
 		// can't happen with a String object but need the catch anyhow
 		catch(ClassNotFoundException e2) {

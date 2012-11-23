@@ -1,38 +1,32 @@
 package client.control.data.entity;
 
 /**
- * Represents an entity object. This class contains one field, "readOnly", and a getter/setter. This attribute is used to ensure mutual exclusion in record editing.
+ * Represents an entity object. This class contains one field, "idNumber", and a getter method.
  * 
  * @author Jeremy
  * @version 2
  */
 public abstract class Entity{
-	boolean readOnly;
 	int idNumber;
 	
 	/**
-	 * Constructs a new read-only Entity with an ID number of 0
+	 * Constructs a new Entity with an ID number of 0
 	 */
 	public Entity(){
-		readOnly = true;
 		idNumber = 0;
 	}
 	
 	/**
-	 * Returns true if the entity is read-only, false otherwise
+	 * Copy constructor
 	 * 
-	 * @return true of the entity is read-only, false otherwise
+	 * @param The Entity to copy from
 	 */
-	public boolean getReadOnly(){
-		return readOnly;
+	public Entity(Entity original){
+		idNumber = original.getID();
 	}
-	/**
-	 * Sets the entity to read-only or readable/writable based on a boolean parameter
-	 * 
-	 * @param True for read-only, false for readable/writable
-	 */
-	public void setReadOnly(boolean newReadOnly){
-		readOnly = newReadOnly;
+	
+	public Entity(int newID){
+		idNumber = newID;
 	}
 	
 	/**
@@ -45,11 +39,39 @@ public abstract class Entity{
 	}
 	
 	/**
-	 * Sets the Entity's ID number
+	 * Returns true if all fields are correctly formatted; false otherwise
 	 * 
-	 * @param The new ID number
+	 * @return True if all fields are correctly formatted; false otherwise
 	 */
-	public void setID(int newID){
-		idNumber = newID;
+	public abstract boolean checkValid();
+	
+	/**
+	 * Checks whether an E-mail address string is correctly formatted
+	 * 
+	 * @param A String Representing the E-mail address
+	 * @return True if the String is a correctly formatted E-mail address; false otherwise
+	 */
+	public static boolean checkEmail(String email){
+		if (email.startsWith("@") || email.endsWith("@"))
+			return false;
+		boolean found = false;
+		for(int i=0;i<email.length();i++)
+			if (email.charAt(i) == '@'){
+				if (found == true)
+					return false;
+				found = true;
+			}
+		return found;
 	}
+	
+	/**
+	 * Checks whether a phone number is correctly formatted
+	 * 
+	 * @param Long representing the phone number
+	 * @return True if the phone number is correctly formatted; false otherwise
+	 */
+	public static boolean checkPhone(long phone){
+		return !(phone < 0 || phone > 9999999999L);
+	}
+
 }

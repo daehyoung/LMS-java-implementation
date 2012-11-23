@@ -7,7 +7,7 @@ import client.control.data.entity.Entity;
  * Represents a TO-DO Note with a description, start date and end date
  * 
  * @author Jeremy Lerner
- * @version 3
+ * @version 4
  */
 public class ToDo extends Entity{
 	Date startDate;
@@ -27,6 +27,37 @@ public class ToDo extends Entity{
 		description = null;
 		completed = false;
 	}
+	/**
+	 * Copy constructor
+	 * 
+	 * @param ToDo object to copy from
+	 */
+	public ToDo(ToDo original){
+		super(original);
+		startDate = original.getStartDate();
+		endDate = original.getEndDate();
+		title = original.getTitle();
+		description = original.getDescription();
+		completed = original.getCompleted();
+	}
+	/**
+	 * Constructs a new ToDo object with all fields specified by parameters
+	 * 
+	 * @param value for ID
+	 * @param value for Start Date
+	 * @param value for End Date
+	 * @param value for Title
+	 * @param value for Description
+	 * @param value for Completed
+	 */
+	public ToDo(int newID, Date newStartDate, Date newEndDate, String newTitle, String newDescription, boolean newCompleted){
+		super(newID);
+		startDate = newStartDate;
+		endDate = newEndDate;
+		title = newTitle;
+		description = newDescription;
+		completed = newCompleted;
+	}
 	
 	/**
 	 * Returns the ToDo's description
@@ -36,16 +67,6 @@ public class ToDo extends Entity{
 	public String getDescription() {
 		return description;
 	}
-
-	/**
-	 * Sets the ToDo's description
-	 * 
-	 * @param The new description
-	 */
-	public void setDescription(String newDescription) {
-		description = newDescription;
-	}
-
 	/**
 	 * Returns the ToDo's title
 	 * 
@@ -54,17 +75,6 @@ public class ToDo extends Entity{
 	public String getTitle() {
 		return title;
 	}
-
-	/**
-	 * Sets the ToDo's title
-	 * 
-	 * @param The new title
-	 */
-	public void setTitle(String newTitle) {
-		title = newTitle;
-	}
-
-
 	/**
 	 * Returns the ToDo's start date
 	 * 
@@ -73,16 +83,6 @@ public class ToDo extends Entity{
 	public Date getStartDate() {
 		return startDate;
 	}
-
-	/**
-	 * Sets the ToDo's start date
-	 * 
-	 * @param The new start date
-	 */
-	public void setStartDate(Date newStartDate) {
-		startDate = newStartDate;
-	}
-
 	/**
 	 * Returns the ToDo's end date
 	 * 
@@ -91,16 +91,6 @@ public class ToDo extends Entity{
 	public Date getEndDate() {
 		return endDate;
 	}
-
-	/**
-	 * Sets the ToDo's end date
-	 * 
-	 * @param The new end date
-	 */
-	public void setEndDate(Date newEndDate) {
-		endDate = newEndDate;
-	}
-	
 	/**
 	 * Returns true of the ToDo is completed, false otherwise
 	 * 
@@ -110,12 +100,7 @@ public class ToDo extends Entity{
 		return completed;
 	}
 	
-	/**
-	 * Changes the completion value of the ToDo based on a boolean parameter
-	 * 
-	 * @param True for complete, False for incomplete
-	 */
-	public void setCompleted(boolean newCompleted){
-		completed = newCompleted;
+	public boolean checkValid(){
+		return endDate.after(startDate);
 	}
 }

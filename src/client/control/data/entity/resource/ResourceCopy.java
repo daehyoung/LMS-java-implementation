@@ -5,9 +5,10 @@ import client.control.data.entity.Entity;
  * Represents a copy of a resource
  * 
  * @author Jeremy Lerner
- * @version 3
+ * @version 5
  */
 public class ResourceCopy extends Entity{
+	int barcode;
 	int resource;
 	int ownerID;
 	boolean enabled;
@@ -17,9 +18,40 @@ public class ResourceCopy extends Entity{
 	 */
 	public ResourceCopy(){
 		super();
+		barcode = 0;
 		resource = 0;
 		ownerID = 0;
 		enabled = false;
+	}
+	
+	/**
+	 * Copy constructor
+	 * 
+	 * @param The ResourceCopy to copy
+	 */
+	public ResourceCopy(ResourceCopy original){
+		super(original);
+		barcode = original.getBarcode();
+		resource = original.getResource();
+		ownerID = original.getOwnerID();
+		enabled = original.getEnabled();
+	}
+	
+	/**
+	 * Constructs a new ResourceCopy with all fields specified
+	 * 
+	 * @param value of ID
+	 * @param value of Barcode
+	 * @param value of Resource
+	 * @param value of Owner
+	 * @param value of Enabled
+	 */
+	public ResourceCopy(int newID, int newBarcode, int newResource, int newOwner, boolean newEnabled){
+		super(newID);
+		barcode = newBarcode;
+		resource = newResource;
+		ownerID = newOwner;
+		enabled = newEnabled;
 	}
 	
 	/**
@@ -31,15 +63,6 @@ public class ResourceCopy extends Entity{
 		return resource;
 	}
 	/**
-	 * Sets the resource that the calling ResourceCopy is a copy of
-	 * 
-	 * @param The ID of the Resource that the ResourceCopy should be a copy of
-	 */
-	public void setResource(int newResource){
-		resource = newResource;
-	}
-
-	/**
 	 * Returns the ResourceCopy's owner's user ID
 	 * 
 	 * @return The ResourceCopy's owner's user ID
@@ -47,15 +70,6 @@ public class ResourceCopy extends Entity{
 	public int getOwnerID(){
 		return ownerID;
 	}
-	/**
-	 * Sets the ResourceCopy's owner
-	 * 
-	 * @param The new owner's user ID
-	 */
-	public void setOwnerID(int newOwnerID){
-		ownerID = newOwnerID;
-	}
-
 	/**
 	 * Returns true if the ResourceCopy is enabled, false otherwise
 	 * 
@@ -65,11 +79,15 @@ public class ResourceCopy extends Entity{
 		return enabled;
 	}
 	/**
-	 * Enables or disables the ResourceCopy based on a boolean parameter
+	 * Returns the ResourceCopy's barcode
 	 * 
-	 * @param True for enabling, False for disabling
+	 * @return The ResourceCopy's barcode
 	 */
-	public void setEnabled(boolean newEnabled){
-		enabled = newEnabled;
+	public int getBarcode(){
+		return barcode;
+	}
+	
+	public boolean checkValid(){
+		return true;
 	}
 }

@@ -33,12 +33,12 @@ public class Main {
 		ServerInterface.getInstance().openConnection("localhost", 1600);
 
 		//If you want to search for user with id 1123
-		Patron patronX = new Patron();
+		Patron patronX;
 		
 		// Asking UserManager control to give you user object with data retrieved from server database
 		patronX = (Patron) UserManager.getUser(100000005);
 		// Displaying results
-		System.out.println("\nThis is result of query:");
+		System.out.println("\nThis is resut of query:");
 		System.out.println("Name: " + patronX.getFirstName() + " " + patronX.getLastName());
 		System.out.println("ID: " + patronX.getID());
 		System.out.println("Email: " + patronX.getEmailAddress());
@@ -47,7 +47,7 @@ public class Main {
 		// Asking UserManager control to give you user object with data retrieved from server database
 		patronX = (Patron) new UserManager().getUser(100000003);
 		// Displaying results
-		System.out.println("\nThis is result of query:");
+		System.out.println("\nThis is resut of query:");
 		System.out.println("Name: " + patronX.getFirstName() + " " + patronX.getLastName());
 		System.out.println("ID: " + patronX.getID());
 		System.out.println("Email: " + patronX.getEmailAddress());

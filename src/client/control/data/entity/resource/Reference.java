@@ -7,7 +7,7 @@ import client.control.data.entity.Entity;
  * Represents a Reference period of a Resource under a User's account
  * 
  * @author Jeremy Lerner
- * @version 2
+ * @version 4
  */
 public class Reference extends Entity{
 	int resourceCopy;
@@ -23,6 +23,31 @@ public class Reference extends Entity{
 		startDate = null;
 		endDate = null;
 	}
+	/**
+	 * Copy constructor
+	 * 
+	 * @param Reference to copy
+	 */
+	public Reference(Reference original){
+		super(original);
+		resourceCopy = original.getResourceCopy();
+		startDate = original.getStartDate();
+		endDate = original.getEndDate();
+	}
+	/**
+	 * Constructs a new Reference with all fields specified
+	 * 
+	 * @param value for ID
+	 * @param value for Resource Copy
+	 * @param value for Start Date
+	 * @param value for End Date
+	 */
+	public Reference(int newID, int newResourceCopy, Date newStartDate, Date newEndDate){
+		super(newID);
+		resourceCopy = newResourceCopy;
+		startDate = newStartDate;
+		endDate = newEndDate;
+	}
 	
 	/**
 	 * Returns the ID number of the ResourceCopy associated with the Reference
@@ -31,14 +56,6 @@ public class Reference extends Entity{
 	 */
 	public int getResourceCopy(){
 		return resourceCopy;
-	}
-	/**
-	 * Sets the ResourceCopy associated with the Reference
-	 * 
-	 * @param The new ResourceCopy's ID number
-	 */
-	public void setResourceCopy(int newResourceCopy){
-		resourceCopy = newResourceCopy;
 	}
 	
 	/**
@@ -50,14 +67,6 @@ public class Reference extends Entity{
 		return startDate;
 	}
 	/**
-	 * Sets the Reference's start date
-	 * 
-	 * @param The new start date
-	 */
-	public void setStartDate(Date newStartDate){
-		startDate = newStartDate;
-	}
-	/**
 	 * Returns the Reference's end date
 	 * 
 	 * @return The Reference's end date
@@ -65,12 +74,8 @@ public class Reference extends Entity{
 	public Date getEndDate(){
 		return endDate;
 	}
-	/**
-	 * Sets the Reference's end date
-	 * 
-	 * @param The new end date
-	 */
-	public void setEndDate(Date newEndDate){
-		endDate = newEndDate;
+	
+	public boolean checkValid(){
+		return (endDate.after(startDate));
 	}
 }

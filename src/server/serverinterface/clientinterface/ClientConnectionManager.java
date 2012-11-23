@@ -16,7 +16,11 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import server.control.LogManager;
+import server.dbinterface.DBInterface;
 import server.serverinterface.userinterface.*;
 /** Representation for server object
  */
@@ -26,6 +30,7 @@ public class ClientConnectionManager {
 	private ServerGUI sg;
 	private int port;
 	private boolean keepGoing;
+	private static Logger logger;
 	
 	/** Constructor
 	 * Server constructor that receive the port to listen to for connection as parameter
@@ -60,6 +65,15 @@ public class ClientConnectionManager {
 	
 	public void start() throws Exception {
 		keepGoing = true;
+		logger = LogManager.getInstance();
+		logger.setLevel(Level.ALL);
+		
+		DBInterface.createDBInterface(
+				"jdbc:mysql://192.168.0.65/",
+				"librisDB",
+				"root",
+				"243816");
+		
 		/* create socket server and wait for connection requests */
 		try 
 		{
@@ -96,13 +110,12 @@ public class ClientConnectionManager {
 				}
 			}
 			catch(Exception e) {
-				display("Exception closing the server and clients: " + e);
+				logger.warning("Exception closing the server and clients: " + e);
 			}
 		}
 		// something went bad
 		catch (IOException e) {
-            String msg = sdf.format(new Date()) + " Exception on new ServerSocket: " + e + "\n";
-			display(msg);
+			logger.warning("Exception on new ServerSocket: " + e);
 		}
 	}
 	
@@ -110,7 +123,7 @@ public class ClientConnectionManager {
 	 * @return void
 	 */
 	
-	protected void stop() {
+	public void stop() {
 		keepGoing = false;
 		// connect to myself as Client to exit statement 
 		// Socket socket = serverSocket.accept();
@@ -157,8 +170,7 @@ public class ClientConnectionManager {
 				break;
 			default:
 				System.out.println("Usage is: > java Server [portNumber]");
-				return;
-				
+				return;		
 		}
 		// create a server object and start it
 		ClientConnectionManager server = new ClientConnectionManager(portNumber);

@@ -1,5 +1,7 @@
 package client.serverinterface;
 
+import communication.RequestPacket;
+import javax.sql.rowset.CachedRowSet;
 /**
  * ServerInterface application - file ServerInterface.java 
  * 
@@ -8,40 +10,31 @@ package client.serverinterface;
  * @author Sardor Isakov
  * @version 1.0
  */
-import communication.RequestPacket;
-import javax.sql.rowset.CachedRowSet;
-/** Representations of a singleton ServerInterface class
- * 
- * @author sardor
- */
 public class ServerInterface {
 	private static ServerInterface INSTANCE = new ServerInterface();
-	public static final int LOGIN = 0, DATABASEQUERY = 1, LOGOUT = 2, GUEST = 3;
 	private int type;
-	NetworkConnection client;
-
-	public RequestPacket send(RequestPacket request) {
-		client.sendMessage(request);
-		return client.getInputStream();
-	}
+	private static NetworkConnection client;
+	private static RequestPacket request;
 	
-	public boolean openConnection(String server,int port) {		
-		return openConnection(server,port, null, null);
-	}
+	public static final int LOGIN = 0, LOGOUT = 2;
 	
-	public boolean openConnection(String server,int port, String username, String password) {
-		client = new NetworkConnection(server, port, username, password);
+	public boolean openConnection(String serverIP,int port) {		
+		client = new NetworkConnection(serverIP, port);
 		if(!client.start()) 
 			return false;
 		return true;
 	}
-
+	
 	public void closeConnection() {		
-		RequestPacket request = new RequestPacket();
 		request.setType(LOGOUT);
 		client.sendMessage(request);
 	}
 	
+	public CachedRowSet request(RequestPacket message) {
+		client.sendMessage(message);
+		request = client.getInputStream();
+		return request.getRowSet();
+	}
 	public int getType() {
 		return type;
 	}
@@ -59,22 +52,14 @@ public class ServerInterface {
 	         //double checked locking - because second check of Singleton instance with lock
 	                if(INSTANCE == null){
 	                    INSTANCE = new ServerInterface();
+	                    request = new RequestPacket();
 	                }
 	            }
 	         }
 	     return INSTANCE;
 	}
-	//Other methods protected by ServerInterface-ness 
-	protected static void demoMethod( ) {
-		      System.out.println("demoMethod for ServerInterface"); 
-	}
+
 	private Object readResolve() {
 		return INSTANCE;
-	}
-
-	public CachedRowSet request(RequestPacket request) {
-		client.sendMessage(request);
-		request = send(request);
-		return request.getRowSet();
 	}
 }

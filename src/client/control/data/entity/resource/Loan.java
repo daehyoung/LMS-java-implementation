@@ -7,11 +7,10 @@ import client.control.data.entity.Entity;
  * Represents a Loan of a Resource to a User
  * 
  * @author Jeremy Lerner
- * @version 3
+ * @version 4
  */
 public class Loan extends Entity{
 	int resourceCopy;
-	int userID;
 	Date checkOutDate;
 	Date dueDate;
 	Date checkInDate;
@@ -28,22 +27,35 @@ public class Loan extends Entity{
 		checkInDate = null;
 		fineAmount = 0;
 	}
-	
 	/**
-	 * Returns the User ID of the User for whom the Loan is
-	 * 
-	 * @return The User ID of the User for whom the Loan is
+	 * Copy constructor
+	 * @param The Loan to copy
 	 */
-	public int getUserID(){
-		return userID;
+	public Loan(Loan original){
+		super(original);
+		resourceCopy = original.getResourceCopy();
+		checkOutDate = original.getCheckOutDate();
+		dueDate = original.getDueDate();
+		checkInDate = original.getCheckInDate();
+		fineAmount = original.getFineAmount();
 	}
 	/**
-	 * Sets the User for whom the Loan is
+	 * Constructs a new Loan with all fields specified
 	 * 
-	 * @param The ID of the User for whom the Loan should be
+	 * @param value for ID
+	 * @param value for Resource Copy
+	 * @param value for Check Out Date
+	 * @param value for Due Date
+	 * @param value for Check In Date
+	 * @param value for Fine Amount
 	 */
-	public void setUserID(int newUserID){
-		userID = newUserID;
+	public Loan(int newID, int newResourceCopy, Date newCheckOutDate, Date newDueDate, Date newCheckInDate, float newFineAmount){
+		super(newID);
+		resourceCopy = newResourceCopy;
+		checkOutDate = newCheckOutDate;
+		dueDate = newDueDate;
+		checkInDate = newCheckInDate;
+		fineAmount = newFineAmount;
 	}
 	
 	/**
@@ -53,14 +65,6 @@ public class Loan extends Entity{
 	 */
 	public int getResourceCopy(){
 		return resourceCopy;
-	}
-	/**
-	 * Sets the ResourceCopy associated with the Loan
-	 * 
-	 * @param The new ResourceCopy's ID number
-	 */
-	public void setResourceCopy(int newResourceCopy){
-		resourceCopy = newResourceCopy;
 	}
 	
 	/**
@@ -72,28 +76,12 @@ public class Loan extends Entity{
 		return checkOutDate;
 	}
 	/**
-	 * Sets the Loan's check-out date
-	 * 
-	 * @param The new check-out date
-	 */
-	public void setCheckOutDate(Date newCheckOutDate){
-		checkOutDate = newCheckOutDate;
-	}
-	/**
 	 * Returns the Loan's check-in date
 	 * 
 	 * @return The Loan's check-in date
 	 */
 	public Date getCheckInDate(){
 		return checkInDate;
-	}
-	/**
-	 * Sets the Loan's check-in date
-	 * 
-	 * @param The new check-in date
-	 */
-	public void setCheckInDate(Date newCheckInDate){
-		checkInDate = newCheckInDate;
 	}
 	/**
 	 * Returns the Loan's due date
@@ -104,15 +92,6 @@ public class Loan extends Entity{
 		return dueDate;
 	}
 	/**
-	 * Sets the Loan's due date
-	 * 
-	 * @param The new due date
-	 */
-	public void setDueDate(Date newDueDate){
-		dueDate = newDueDate;
-	}
-	
-	/**
 	 * Returns the fine amount on the Loan
 	 * 
 	 * @return The Fine
@@ -121,12 +100,7 @@ public class Loan extends Entity{
 		return fineAmount;
 	}
 	
-	/**
-	 * Sets the fine amount on the Loan
-	 * 
-	 * @param The new fine amount
-	 */
-	public void setFineAmount(float newFineAmount){
-		fineAmount = newFineAmount;
+	public boolean checkValid(){
+		return (dueDate.after(checkOutDate));
 	}
 }

@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import com.sun.rowset.CachedRowSetImpl;
+
 import server.dbinterface.DBInterface;
+import server.dbinterface.DBInterfaceXX;
 
 /**
  * This is the Fine Manager that will increment the fines of overdue resources.
@@ -18,7 +20,7 @@ import server.dbinterface.DBInterface;
  */
 public class FineManager extends ScheduledTask {
 	
-	private DBInterface dbInterface;	//interface to the database
+	private DBInterfaceXX dbInterface;	//interface to the database
 		
 	private final static BigDecimal MAX_FINE = new BigDecimal(5.00);	//the maximum fine a single loan can incur
 	private final static long INCREMENT_FINE_24HR = 24*60*60*1000L;	//The default time between when a fine is incremented
@@ -78,7 +80,7 @@ public class FineManager extends ScheduledTask {
 	 * @throws SQLException If couldn't connect to database or invalid query was sent
 	 */
 	private void updateFines() throws SQLException{
-		this.dbInterface = DBInterface.getReference();
+		this.dbInterface = DBInterfaceXX.getReference();
 		if(dbInterface == null)
 			throw new SQLException("DBInterface not initialized");
 		
@@ -222,14 +224,14 @@ public class FineManager extends ScheduledTask {
 	
 	
 // Used for testing the FineManager
-/*
+
 	public static void main(String args[]){
 		DBInterface.createDBInterface(
-				"jdbc:mysql://localhost:3306/",
+				"jdbc:mysql://192.168.0.65:3306/",
 				"librisDB",
 				"root",
-				"root");
+				"243816");
 		FineManager fineMgr = new FineManager(1000,1000,5000);
 	}
-*/
+
 }

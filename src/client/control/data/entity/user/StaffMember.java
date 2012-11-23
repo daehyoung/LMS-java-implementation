@@ -1,51 +1,38 @@
 package client.control.data.entity.user;
-import java.util.ArrayList;
 
 /**
- * This class represents a User of the StaffMember type, and is intended to be extended by the Librarian and Administrator classes.
+ * This class represents a User of the StaffMember type, and is intended to be extended by the Faculty and Student classes.
  * 
  * @author Jeremy Lerner
- * @version 1
+ * @version 2
  */
 public abstract class StaffMember extends User{
-	ArrayList<Integer> references;
-	
 	/**
-	 * Constructs a new StaffMember with no references, loans, reserves, and all other fields set to null
+	 * Constructs a new StaffMember with no reserves, loans, and all other fields set to null
 	 */
 	public StaffMember(){
 		super();
-		references = new ArrayList<Integer>(); //It didn't work with the int type
+	}
+	/**
+	 * Copy constructor
+	 * 
+	 * @param StaffMember to copy from
+	 */
+	public StaffMember(StaffMember original){
+		super((User)original);
 	}
 	
 	/**
-	 * Returns the reference ID of one of the StaffMember's references. References are indexed by the StaffMember object as an array of reference ID numbers. This function returns an ID number, when given an array index.
+	 * Constructs a new StaffMember object and sets all the fields to specified values
 	 * 
-	 * @param The array index of the reference to get
-	 * @return The reference ID of the reference with the given index
-	 * @throws Thrown when the parameter is out-of-bounds (negative or greater than or equal to the number of references held by the StaffMember)
+	 * @param value for ID
+	 * @param value for First Name
+	 * @param value for Last Name
+	 * @param value for Password
+	 * @param value for E-mail address
+	 * @param True for enabled; false otherwise
 	 */
-	public int getReference(int referenceIndex)throws IndexOutOfBoundsException{
-		return references.get(referenceIndex).intValue();
-	}
-	/**
-	 * Adds a new reference to the StaffMember
-	 * 
-	 * @param The reference ID number of the reference to add
-	 * @return The StaffMember's array index of the newly added reference
-	 */
-	public int addReference(int newReferenceID){
-		Integer newReferenceWrapper = new Integer(newReferenceID);
-		references.add(newReferenceWrapper);
-		return references.indexOf(newReferenceWrapper);
-	}
-	/**
-	 * Removes a reference from the StaffMember
-	 * 
-	 * @param The Reference ID of the reference to remove
-	 * @return True if the Reference ID was present, false otherwise
-	 */
-	public boolean removeReference(int reserveID){
-		return references.remove(new Integer(reserveID)); //This does work because ArrayList.remove(Object) invokes the Object.equals() method, which Integer implements by comparing the values, not addresses.
+	public StaffMember(int newID, String newFirstName, String newLastName, String newPassword, String newEmail, boolean newEnabled){
+		super(newID, newFirstName, newLastName, newPassword, newEmail, newEnabled);
 	}
 }

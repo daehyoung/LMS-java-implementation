@@ -9,6 +9,7 @@ import communication.RequestPacket;
 
 import client.serverinterface.ServerInterface;
 import client.control.data.entity.user.Patron;
+import client.control.data.entity.user.Student;
 import client.control.data.entity.user.User;
 
 /**
@@ -34,7 +35,10 @@ public class UserManager{
 		System.out.println("UserManager.getUser(User) is a stub");
 		return null;
 	}
-	
+				/*user.setID(rowSet.getInt("user_ID"));	
+			user.setFirstName(rowSet.getString("first_name"));
+			user.setLastName(rowSet.getString("last_name"));
+			user.setEmailAddress(rowSet.getString("email"));*/
 	/**
 	 * Returns a User object with a given ID number
 	 * 
@@ -42,32 +46,29 @@ public class UserManager{
 	 * @return A User object with the given ID number
 	 * @throws SQLException 
 	 */
-	public static User getUser(int idNumber) throws SQLException{
-		//Write Query
-		//Query Server
-		//Construct User object
-		
-		String sql = "SELECT * FROM librisDB.user WHERE user_id = "+idNumber;
-	    Patron user = new Patron();
+	public static User getUser(int idNumber) throws SQLException{		
+		String sql = "SELECT * FROM librisDB.user WHERE user_id = " + idNumber;
+
 		RequestPacket message = new RequestPacket();
-		
 		message.setCode(RequestPacket.SELECT);
 		message.setType(RequestPacket.REQUEST_SQL);
 		message.setSqlStatment(sql);
 		
-		message = ServerInterface.getInstance().send(message);
-		CachedRowSet rowSet = message.getRowSet();//ServerInterface.getInstance().request(request);
-			
-		// Populating empty user object
+		CachedRowSet rowSet = ServerInterface.getInstance().request(message);
+		
+		Student user = new Student();
+		int id;
+		String first,last,email;
+
 		while (rowSet.next()) {
-			user.setID(rowSet.getInt("user_ID"));	
-			user.setFirstName(rowSet.getString("first_name"));
-			user.setLastName(rowSet.getString("last_name"));
-			user.setEmailAddress(rowSet.getString("email"));
+			id = rowSet.getInt("user_ID");
+			first = rowSet.getString("first_name");
+			last = rowSet.getString("last_name");
+			email = rowSet.getString("email");
+			user = new Student(id,first,last,"pass", email, true);
 		}
 		rowSet.close();
 		
-		// Returning populated User object
 		System.out.println("UserManager.getUser(int) is a stub");
 		return user;
 	}

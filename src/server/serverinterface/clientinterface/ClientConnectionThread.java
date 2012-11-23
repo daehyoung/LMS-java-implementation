@@ -1,4 +1,14 @@
 package server.serverinterface.clientinterface;
+import java.io.*;
+import java.net.Socket;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import server.control.LogManager;
+import server.control.datamanagement.RequestManager;
+import communication.*;
+/** Representation for Client Thread
+ */
 /**
  * Client Thread side application - file ClientConnectionThread.java 
  * 
@@ -6,16 +16,6 @@ package server.serverinterface.clientinterface;
  * 
  * @author Sardor Isakov
  * @version 1.0
- */
-import java.io.*;
-import java.net.Socket;
-import java.util.Date;
-
-import server.control.datamanagement.RequestManager;
-//import server.databaseinterface.DBInterface;
-
-import communication.*;
-/** Representation for Client Thread
  */
 class ClientConnectionThread  extends Thread {
 	private static int uniqueId; 	// a unique ID for each connection
@@ -30,8 +30,9 @@ class ClientConnectionThread  extends Thread {
 
 	RequestPacket request;
 	RequestManager requestManager;
-	String cm2;
 	String date;
+	
+	private static Logger logger;
 	
 	/** Constructor
 	 * 
@@ -41,9 +42,14 @@ class ClientConnectionThread  extends Thread {
 	protected ClientConnectionThread(Socket socket) throws Exception {
 		// a unique id
 		threadID = ++uniqueId;
+		logger = LogManager.getInstance();
+		logger.setLevel(Level.ALL);
+		
+		
 		this.socket = socket;
 		/* Creating both Data Stream */
 		System.out.println("Thread trying to create Object Input/Output Streams");
+		logger.fine("Thread trying to create Object Input/Output Streams");
 		try {
 			// create output first
 			sOutput = new ObjectOutputStream(socket.getOutputStream());
@@ -52,7 +58,7 @@ class ClientConnectionThread  extends Thread {
 		    request = (RequestPacket) sInput.readObject();
 		}
 		catch (IOException e) {
-			//display("Exception creating new Input/output Streams: " + e);
+			logger.severe("Exception creating new Input/output Streams: " + e);
 			return;
 		}
 		// have to catch ClassNotFoundException
@@ -60,8 +66,6 @@ class ClientConnectionThread  extends Thread {
 		catch (ClassNotFoundException e) {
 		}
         date = new Date().toString() + "\n";
-        
-        
 	}
 	
 	/**
@@ -77,7 +81,7 @@ class ClientConnectionThread  extends Thread {
 				request = (RequestPacket) sInput.readObject();
 			}
 			catch (IOException e) {
-				//display(username + " Exception reading Streams: " + e);
+				logger.severe("Exception reading Streams: " + e);
 				break;				
 			}
 			catch(ClassNotFoundException e2) {
@@ -98,18 +102,18 @@ class ClientConnectionThread  extends Thread {
 					
 					//writeMsg(response);
 					System.out.println(userType + " disconnected with a LOGOUT message.");
+					logger.fine(userType + " disconnected with a LOGOUT message.");
 					keepGoing = false;
 					break;
 				case RequestPacket.REQUEST_LOGIN:
 					request = requestManager.processRequest(request);
-					userType = request.getUsername();
 					writeMsg(request);
 					break;
 			}
 		}
 		// remove myself from the arrayList containing the list of the
 		// connected Clients
-		//remove(id);
+		//remove(threadID);
 		close();
 	}
 	
@@ -149,13 +153,8 @@ class ClientConnectionThread  extends Thread {
 		}
 		// if an error occurs, do not abort just inform the user
 		catch(IOException e) {
-			//display("Error sending message to " + username);
-			//display(e.toString());
+			logger.warning("Error sending message " + e.toString());
 		}
 		return true;
 	}
-
-
-
-
 }
