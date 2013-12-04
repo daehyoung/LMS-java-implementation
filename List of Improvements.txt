@@ -1,0 +1,38 @@
+﻿Improvements for the Libris Library Management System
+
+
+
+Overview:
+
+This file contains a list of reasonable improvements for future releases of the Libris 
+Library Management System.  Most of these improvements are intended to improve the 
+usability of the system.
+
+
+
+
+List of Improvements:
+
+A menu bar (for example, file, edit, etc.) to serve as an alternative to the toolbar buttons.
+
+
+A general help button that displays the user manual.
+
+
+A refresh button that will refresh the tab the user is currently viewing.  In the current 
+system, if a change is made (for example, something is added, removed, or changed in  
+the system), the change may not be visible on a client unless the tab is closed and 
+reopened.
+
+
+An option to print a receipt when a resource copy is checked out, checked in, renewed, 
+or when a fine is paid.
+
+
+Help buttons that display the help contents specifically for what the user has open.  For 
+example, if a staff member has open the “Check Out Tab” for a given patron, then 
+clicking the help button in the “Check Out Tab” will display the help contents pertaining to 
+that tab.
+
+
+The availability of a resource shown when a user searches for a resource.

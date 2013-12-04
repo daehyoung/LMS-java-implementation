@@ -1,0 +1,83 @@
+﻿Roles for the Project Members
+
+
+
+
+Overview:
+
+This file lists the roles for each project member.
+
+
+
+
+Daniel Huettner:
+
+Primary Role(s):
+• Project manager.
+• Leader for the GUI team.
+        • Human factors specialist
+Secondary Role(s):
+        • Developer for the application logic team.
+
+
+
+
+Jeremy Lerner:
+
+Primary Role(s):
+        • Leader for the application logic team.
+Secondary Role(s):
+        • Developer for the GUI team.
+
+
+
+
+Peter Abelseth:
+
+Primary Role(s):
+        • Leader for the database team.
+Secondary Role(s):
+        • Developer for the application logic team.
+
+
+
+
+Sardor Isakov:
+
+Primary Role(s):
+        • Developer for the application logic team.
+Secondary Role(s):
+        • Developer for the database team.
+
+
+
+
+Matthew Hinton:
+
+Primary Role(s):
+        • Developer for the GUI team.
+        • Human factors specialist
+Secondary Role(s):
+        • Developer for the application logic team.
+
+
+
+
+Carlos Lozano:
+
+Primary Role(s):
+        • Technical writer.
+Secondary Role(s):
+        • Developer for the database team.
+        • Developer for the application logic team.
+
+
+
+
+Ken Anglas:
+
+Primary Role(s):
+        • Technical writer.
+Secondary Role(s):
+        • Developer for the database team.
+        • Developer for the application logic team.
