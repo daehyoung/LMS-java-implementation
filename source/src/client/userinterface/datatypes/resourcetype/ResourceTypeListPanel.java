@@ -1,0 +1,157 @@
+package client.userinterface.datatypes.resourcetype;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+
+import util.Constants;
+import client.control.data.ResourceTypeManager;
+import client.control.data.entity.resource.ResourceType;
+import client.userinterface.datatypes.ErrorPanel;
+import client.userinterface.mainwindow.MainWindow;
+
+/**
+ * Creates a list to hold any number of resource types.
+ * 
+ * @author Daniel Huettner
+ * @version 5
+ */
+public class ResourceTypeListPanel extends JPanel {
+	
+	private static final long serialVersionUID = 1L;
+
+	// The resourceType array
+	private ResourceType[] resourceTypeArray;
+	
+	private ErrorPanel errorPanel;
+	
+	private JButton addButton;
+	private JPanel buttonPanel;
+	private ResourceTypeList list = null;
+	
+	public ResourceTypeListPanel() {
+		super();
+		
+		// get necessary data from server
+		if (getData())
+			init();
+		else
+			displayError(true);
+	}
+	
+	// Create the GUI
+	private void init() {
+		setBackground(Constants.BACKPANEL);
+		setVisible(true);
+		setBackground(Constants.BACKPANEL);
+		setLayout(new BorderLayout(0, 0));
+		buttonPanel = new JPanel();
+		add(buttonPanel, BorderLayout.NORTH);
+		createButtonPanel();
+		createList();
+	}
+	
+	// Gets the required data from the server
+	private boolean getData() {
+		
+		if (resourceTypeArray == null) {
+			ResourceType searchKey = new ResourceType(-1, null, null, null, null, null, -1, -1, -1, -1, -1, true);
+			ResourceType[] resourceTypeArrayEnabled = ResourceTypeManager.getResourceType(searchKey);
+			if (resourceTypeArrayEnabled == null)
+				return false;
+			searchKey = new ResourceType(-1, null, null, null, null, null, -1, -1, -1, -1, -1, false);
+			ResourceType[] resourceTypeArrayDisabled = ResourceTypeManager.getResourceType(searchKey);
+			if (resourceTypeArrayDisabled == null)
+				return false;
+			resourceTypeArray = new ResourceType[resourceTypeArrayEnabled.length + resourceTypeArrayDisabled.length];
+			int i;
+			for (i = 0; i < resourceTypeArrayEnabled.length; i++)
+				resourceTypeArray[i] = resourceTypeArrayEnabled[i];
+			for (; i < resourceTypeArray.length; i++)
+				resourceTypeArray[i] = resourceTypeArrayDisabled[i - resourceTypeArrayEnabled.length];
+		}
+		
+		return true;
+		
+	}
+	
+	// Displays an error explaining that the necessary data could not
+	// be retrieved
+	private void displayError(boolean visible) {
+		setVisible(true);
+		setLayout(new BorderLayout(0, 0));
+		if (errorPanel == null) {
+			errorPanel = new ErrorPanel();
+			errorPanel.addActionListenerToButton(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					if (getData()) {
+						displayError(false);
+						init();
+					}
+				}
+			});
+		}
+		if (visible){
+			if (!this.isAncestorOf(errorPanel))
+				add(errorPanel);
+		}
+		else {
+			if (this.isAncestorOf(errorPanel))
+				remove(errorPanel);
+		}
+		
+	}
+
+	private void createList() {
+		list = new ResourceTypeList();
+		list.setItems(new ArrayList<Object>(Arrays.asList(resourceTypeArray)));
+		add(list, BorderLayout.SOUTH);
+	}
+	
+	// Creates the button panel
+	private void createButtonPanel() {
+		buttonPanel = new JPanel();
+		add(buttonPanel, BorderLayout.NORTH);
+		buttonPanel.setLayout(new GridLayout(1, 11, 0, 0));
+		buttonPanel.setBackground(Constants.BACKPANEL);
+		
+		createAddButton();
+	}
+
+	// Creates the add button
+	private void createAddButton() {
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Constants.BACKPANEL);
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		
+		addButton = new JButton("Add");
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				addItem();
+			}
+		});
+		panel.add(addButton);
+		buttonPanel.add(panel);
+	}
+	
+	public void addItem()
+	{
+		ResourceTypeViewer viewer = new ResourceTypeViewer(null);
+		MainWindow main = MainWindow.getReference();
+		main.addTab(viewer.toString(), viewer);
+	}
+	
+	@Override
+	public String toString() {
+		return "Resource Type List";
+	}
+}
